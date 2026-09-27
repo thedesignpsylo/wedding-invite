@@ -1,0 +1,40 @@
+CONNECT THE RSVP FORM TO A GOOGLE SHEET (about 3 minutes)
+
+1. Go to sheets.new and name the sheet "Noble & Neha RSVPs".
+2. In the sheet: Extensions > Apps Script. Delete what's there and paste this:
+
+const HEADERS = ['Time', 'Name', 'Attending', 'Seats', 'Events', 'Invited as'];
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(HEADERS);
+      sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
+      sheet.setFrozenRows(1);
+    }
+    const p = e.parameter;
+    sheet.appendRow([p.time, p.name, p.attending, Number(p.seats) || 0, p.events, p.invitedAs]);
+    return ContentService.createTextOutput('ok');
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+3. Click Save, then Deploy > New deployment.
+   - Select type (gear icon): Web app
+   - Execute as: Me
+   - Who has access: Anyone
+   Click Deploy, allow the permissions Google asks for, and copy the Web app URL
+   (it ends in /exec).
+4. Open index.html, find  sheetWebAppUrl: ""  near the bottom, and paste the URL
+   between the quotes.
+
+Every RSVP then lands as a new row: time, name, yes/no, number of seats, which
+events they marked, and the name from their personal link (?to=Priya) if you
+sent them one. The total headcount per event is easy to get with a filter or
+=SUMIF on the Events and Seats columns.
+
+If you ever edit the script, use Deploy > Manage deployments > Edit > New version,
+so the URL stays the same.
