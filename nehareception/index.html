@@ -6,9 +6,9 @@
 <link rel="preload" as="image" href="../envelope/closed.webp" fetchpriority="high">
 <link rel="preload" as="image" href="../envelope/flap.webp">
 <link rel="preload" as="image" href="../envelope/body.webp">
-<title>Noble & Neha · December 2026</title>
+<title>Neha & Noble · December 2026</title>
 <meta name="description" content="The Vishwanath family invites you. An evening in Hyderabad, 20 December 2026.">
-<meta property="og:title" content="Noble & Neha are getting married">
+<meta property="og:title" content="Neha & Noble are getting married">
 <meta property="og:description" content="The Vishwanath family invites you · Rhythm, Nature's Elegance, Hyderabad · 20 Dec 2026">
 <meta name="theme-color" content="#0E1A3F">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -656,7 +656,7 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
       <div class="env-back"></div>
       <div class="env-card">
         <small>You're invited</small>
-        <div class="nm"><span data-bind="couple">Noble &amp; Neha</span></div>
+        <div class="nm"><span data-bind="couple">Neha &amp; Noble</span></div>
         <small>December 2026</small>
       </div>
       <img class="env-layer env-body" src="../envelope/body.webp" alt="" decoding="async">
@@ -766,7 +766,7 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
   </div>
 
   <div class="hero-text">
-    <h1 class="names" data-bind="coupleHtml">Noble <em>&amp;</em> Neha</h1>
+    <h1 class="names" data-bind="coupleHtml">Neha <em>&amp;</em> Noble</h1>
     <p class="eyebrow">are getting married · December 2026</p>
   </div>
   <a href="#" class="reseal" id="resealBtn" aria-label="Seal this letter again and replay the opening"><b aria-hidden="true">×</b><u>seal this letter again</u><b aria-hidden="true">×</b></a>
@@ -960,7 +960,7 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
 </symbol></defs></svg>
   <h2 class="reveal">See you under the stars</h2>
   <p class="note reveal">We can't wait to hug you, feed you and dance with you.</p>
-  <p class="sig reveal"><span data-bind="couple">Noble &amp; Neha</span>'s wedding</p>
+  <p class="sig reveal"><span data-bind="couple">Neha &amp; Noble</span>'s wedding</p>
 </section>
 
 </main>
@@ -978,10 +978,11 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
 const CONFIG = {
   groom: "Noble",
   groomParents: "S/O K.A.Babu and Jaisy Babu",
-  groomFull: "Noble Babu",       // full name on the letter (this edition only)
+  groomFull: "Noble Babu",       // full name, used on the letter only
   bride: "Neha",
   brideParents: "D/O RK Vishwanath and Krishna Veni Vishwanath",
-  brideFull: "Neha Vishwanath",  // full name on the letter (this edition only)
+  brideFull: "Neha Vishwanath",  // full name, used on the letter only
+  brideFirst: true,               // Neha's name comes first everywhere on this edition
   initials: "N&N",
   sealLetter: "N",                   // monogram pressed into the wax seal
   hashtag: "#NobleAndNeha",
@@ -1009,11 +1010,12 @@ function add(parent,html){parent.insertAdjacentHTML('beforeend',html)}
 function spiral(cx,cy,r,turns=1.6){let d='';const n=40;for(let i=0;i<=n;i++){const t=i/n, a=t*turns*6.283, rad=r*t;d+=(i?'L':'M')+f1(cx+Math.cos(a)*rad)+' '+f1(cy+Math.sin(a)*rad)}return d}
 
 /* ---------- bind text ---------- */
-const couple=`${CONFIG.groom} & ${CONFIG.bride}`;
+const P1=CONFIG.brideFirst?CONFIG.bride:CONFIG.groom,P2=CONFIG.brideFirst?CONFIG.groom:CONFIG.bride;
+const couple=`${P1} & ${P2}`;
 $$('[data-bind]').forEach(el=>{const k=el.dataset.bind;
-  if(k==='coupleFamily'){const n=el.querySelectorAll('.nm');n[0].textContent=CONFIG.brideFull||CONFIG.bride;n[1].textContent=CONFIG.groomFull||CONFIG.groom;const f=el.querySelectorAll('.kin');if(f[0])f[0].textContent=CONFIG.brideParents;if(f[1])f[1].textContent=CONFIG.groomParents;return}
-  if(k==='coupleHtml'||k==='coupleHtml2'){el.innerHTML=`${CONFIG.groom} <em>&amp;</em> ${CONFIG.bride}`;return}
-  const map={couple,initialsPretty:`${CONFIG.groom[0]} & ${CONFIG.bride[0]}`,initials:CONFIG.initials,sealLetter:(CONFIG.sealLetter||CONFIG.groom[0]),groom:CONFIG.groom,bride:CONFIG.bride,hashtag:CONFIG.hashtag,rsvpBy:CONFIG.rsvpBy};
+  if(k==='coupleFamily'){const n=el.querySelectorAll('.nm');n[0].textContent=CONFIG.brideFull||CONFIG.bride;n[1].textContent=CONFIG.groomFull||CONFIG.groom;const f=el.querySelectorAll('.kin');f[0].textContent=CONFIG.brideParents;f[1].textContent=CONFIG.groomParents;return}
+  if(k==='coupleHtml'||k==='coupleHtml2'){el.innerHTML=`${P1} <em>&amp;</em> ${P2}`;return}
+  const map={couple,initialsPretty:`${P1[0]} & ${P2[0]}`,initials:CONFIG.initials,sealLetter:(CONFIG.sealLetter||CONFIG.groom[0]),groom:CONFIG.groom,bride:CONFIG.bride,hashtag:CONFIG.hashtag,rsvpBy:CONFIG.rsvpBy};
   if(map[k]!=null) el.textContent=map[k];});
 document.title=`${couple} · December 2026`;
 $$('.hero-text .names,.env-card .nm,.letter .names,.closing .sig,.mono b,.sec-title h2,.stamp h4,.shore h3,.ev h3').forEach(el=>{
