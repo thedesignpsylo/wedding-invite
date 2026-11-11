@@ -786,9 +786,9 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
     <p class="dear" id="dear">Dear you,</p>
     <p class="body" style="margin-top:14px">The Vishwanath family cordially invites you to celebrate the wedding of</p>
     <div class="names family" data-bind="coupleFamily">
-      <div class="who"><span class="nm">Noble Babu</span></div>
+      <div class="who"><span class="nm">Neha Vishwanath</span><span class="kin">D/O RK Vishwanath and Krishna Veni Vishwanath</span></div>
       <div class="and"><em>&amp;</em></div>
-      <div class="who"><span class="nm">Neha Vishwanath</span></div>
+      <div class="who"><span class="nm">Noble Babu</span><span class="kin">S/O K.A.Babu and Jaisy Babu</span></div>
     </div>
     <p class="dear closer">It wouldn't be the same without you.</p>
   </div>
@@ -977,10 +977,10 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
    ========================================================= */
 const CONFIG = {
   groom: "Noble",
-  groomParents: "",
+  groomParents: "S/O K.A.Babu and Jaisy Babu",
   groomFull: "Noble Babu",       // full name on the letter (this edition only)
   bride: "Neha",
-  brideParents: "",
+  brideParents: "D/O RK Vishwanath and Krishna Veni Vishwanath",
   brideFull: "Neha Vishwanath",  // full name on the letter (this edition only)
   initials: "N&N",
   sealLetter: "N",                   // monogram pressed into the wax seal
@@ -1013,7 +1013,7 @@ function spiral(cx,cy,r,turns=1.6){let d='';const n=40;for(let i=0;i<=n;i++){con
 /* ---------- bind text ---------- */
 const couple=`${CONFIG.groom} & ${CONFIG.bride}`;
 $$('[data-bind]').forEach(el=>{const k=el.dataset.bind;
-  if(k==='coupleFamily'){const n=el.querySelectorAll('.nm');n[0].textContent=CONFIG.groomFull||CONFIG.groom;n[1].textContent=CONFIG.brideFull||CONFIG.bride;const f=el.querySelectorAll('.kin');if(f[0])f[0].textContent=CONFIG.groomParents;if(f[1])f[1].textContent=CONFIG.brideParents;return}
+  if(k==='coupleFamily'){const n=el.querySelectorAll('.nm');n[0].textContent=CONFIG.brideFull||CONFIG.bride;n[1].textContent=CONFIG.groomFull||CONFIG.groom;const f=el.querySelectorAll('.kin');if(f[0])f[0].textContent=CONFIG.brideParents;if(f[1])f[1].textContent=CONFIG.groomParents;return}
   if(k==='coupleHtml'||k==='coupleHtml2'){el.innerHTML=`${CONFIG.groom} <em>&amp;</em> ${CONFIG.bride}`;return}
   const map={couple,initialsPretty:`${CONFIG.groom[0]} & ${CONFIG.bride[0]}`,initials:CONFIG.initials,sealLetter:(CONFIG.sealLetter||CONFIG.groom[0]),groom:CONFIG.groom,bride:CONFIG.bride,hashtag:CONFIG.hashtag,rsvpBy:CONFIG.rsvpBy};
   if(map[k]!=null) el.textContent=map[k];});
