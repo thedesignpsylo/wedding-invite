@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-autoopen>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -237,6 +237,16 @@ section{position:relative;padding:clamp(90px,12vw,160px) 20px}
   opacity:0;transition:.3s;white-space:nowrap;color:rgba(255,246,226,.9);text-shadow:0 1px 8px rgba(20,10,35,.85);pointer-events:none}
 #dots a:hover span,#dots a.on span{opacity:.9;transform:translate(0,-50%)}
 @media (max-width:900px){#dots{right:10px;gap:12px}#dots a{width:10px;height:10px}#dots i{width:4px;height:4px}#dots span{display:none}}
+@media (prefers-reduced-motion:reduce){.enter-btn{animation:none}}
+/* bolder "Scroll to explore" on this edition */
+.scroll-cue{transition-delay:1.2s;color:#FFE7A3}
+.enter-btn{padding:13px 24px 13px 19px;gap:10px;font-size:12.5px;font-weight:600;letter-spacing:.2em;color:#4A1424;text-shadow:none;
+  background:linear-gradient(180deg,#FFE9A8,#F2C45A);-webkit-backdrop-filter:none;backdrop-filter:none;
+  box-shadow:0 8px 22px rgba(0,0,0,.35);animation:cueBounce 1.8s ease-in-out infinite,cuePulse 1.8s ease-out infinite}
+.enter-btn svg{width:16px;height:16px;stroke:#4A1424;stroke-width:2}
+.scroll-cue:hover .enter-btn{background:linear-gradient(180deg,#FFF1C6,#F5CE6E);color:#4A1424}
+@keyframes cueBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes cuePulse{0%{box-shadow:0 8px 22px rgba(0,0,0,.35),0 0 0 0 rgba(255,214,120,.7)}70%,100%{box-shadow:0 8px 22px rgba(0,0,0,.35),0 0 0 16px rgba(255,214,120,0)}}
 @media (prefers-reduced-motion:reduce){.enter-btn{animation:none}}
 
 /* ================= LETTER ================= */
@@ -672,7 +682,7 @@ footer .studio{display:block;margin-top:16px;font-family:var(--sans);font-weight
     <text x="60" y="76" text-anchor="middle" font-family="'Pinyon Script','Snell Roundhand',cursive" font-size="46" fill="#9A1B30" data-bind="sealLetter">N</text>
   </g>
 </svg></div>
-      <div class="env-note">tap the seal to open</div>
+      <div class="env-note">opening your invitation</div>
     </div>
   </div>
 </div>
@@ -1197,6 +1207,13 @@ function openInviteNow(){if(opened)return;opened=true;
   T(5000,()=>{document.body.classList.remove('locked');$('#dots').classList.add('show');rain(reduce?0:26)});
   T(5600,()=>{ww.style.display='none'})}
 env.addEventListener('click',openInvite);
+// this edition opens the letter by itself a moment after it arrives (a tap still opens it sooner)
+let autoT;
+function scheduleAutoOpen(ms){clearTimeout(autoT);autoT=setTimeout(function go(){
+  if(opened||resealing)return;
+  if(document.hidden){document.addEventListener('visibilitychange',function v(){if(!document.hidden){document.removeEventListener('visibilitychange',v);autoT=setTimeout(go,1200)}});return}
+  openInvite()},ms)}
+scheduleAutoOpen(3000);
 /* seal the letter again: hero folds away, the card slides back in, the flap closes and the seal returns (no doors) */
 let resealing=false;
 function resealInvite(){if(!opened||resealing)return;resealing=true;
@@ -1214,7 +1231,7 @@ function resealInvite(){if(!opened||resealing)return;resealing=true;
     ww.style.transition='none';ww.classList.remove('rise','zoom');ww.style.display='';void ww.offsetWidth;ww.style.transition='';
     void hero.offsetWidth;hero.classList.remove('no-anim');
     everScrolled=false;cueHidden=null;onDots();
-    opened=false;resealing=false},2700)}
+    opened=false;resealing=false;scheduleAutoOpen(1500)},2700)}
 $('#resealBtn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();resealInvite()});
 const SEEN='nn-intro-seen';
 function skipIntro(){opened=true;const i=$('#intro');if(i)i.remove();ww.style.display='none';

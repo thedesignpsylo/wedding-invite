@@ -55,7 +55,7 @@
     /* arrows either side of "Scroll to explore" */
     '.scroll-cue.nnh-row{flex-direction:row!important;width:max-content;white-space:nowrap}' +
     '.nnh-arr{display:inline-block;flex:none;vertical-align:middle;width:14px;height:20px;margin:0 10px;position:relative;top:-1px;pointer-events:none}' +
-    '.nnh-arr svg{display:block;width:100%;height:100%;overflow:visible;animation:nnhArr 1.6s ease-in-out infinite}' +
+    '.nnh-arr svg{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 1px 3px rgba(0,0,0,.55));animation:nnhArr 1.6s ease-in-out infinite}' +
     '.nnh-arr.nnh-r svg{animation-delay:.12s}' +
     '@keyframes nnhArr{0%,100%{transform:translateY(-3px);opacity:.55}50%{transform:translateY(4px);opacity:1}}' +
 
@@ -102,7 +102,8 @@
 
     var DOT = '<div class="nnh-move"><div class="nnh-dot"></div></div>';
     var tap = null, glow = [];
-    if (env && seal) {
+    var autoOpen = document.documentElement.hasAttribute('data-autoopen');   // letter opens by itself: no tap hint
+    if (env && seal && !autoOpen) {
       var halo = el('nnh-halo', ''), ring = el('nnh-ring', ''), ring2 = el('nnh-ring nnh-ring2', '');
       tap = el('nnh-tap', DOT);
       seal.insertAdjacentElement('beforebegin', halo);
