@@ -1211,7 +1211,10 @@ function scheduleAutoOpen(ms){clearTimeout(autoT);autoT=setTimeout(function go()
   if(opened||resealing)return;
   if(document.hidden){document.addEventListener('visibilitychange',function v(){if(!document.hidden){document.removeEventListener('visibilitychange',v);autoT=setTimeout(go,1200)}});return}
   openInvite()},ms)}
-scheduleAutoOpen(3000);
+// start the short wait only once the envelope pictures have loaded, i.e. once the guest can see the card
+{const envImgs=[...env.querySelectorAll('.env-body,.flap-front,.flap-back')];
+ Promise.race([Promise.all(envImgs.map(i=>i.complete?0:new Promise(r=>{i.addEventListener('load',r,{once:true});i.addEventListener('error',r,{once:true})}))),
+   new Promise(r=>setTimeout(r,2000))]).then(()=>scheduleAutoOpen(1000))}
 /* seal the letter again: hero folds away, the card slides back in, the flap closes and the seal returns (no doors) */
 let resealing=false;
 function resealInvite(){if(!opened||resealing)return;resealing=true;
